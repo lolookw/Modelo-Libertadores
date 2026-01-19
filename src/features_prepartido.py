@@ -190,6 +190,11 @@ def main() -> None:
     # Features rolling
     df_feat = construir_features_rolling(df, ventana=args.ventana)
 
+    df_feat["dif_puntos_ultN"] = df_feat["puntos_ultN_local"] - df_feat["puntos_ultN_visitante"]
+    df_feat["dif_gf_ultN"] = df_feat["gf_ultN_local"] - df_feat["gf_ultN_visitante"]
+    df_feat["dif_gc_ultN"] = df_feat["gc_ultN_local"] - df_feat["gc_ultN_visitante"]
+
+
     asegurar_directorio(ruta_out.parent)
     df_feat.to_csv(ruta_out, index=False, encoding="utf-8")
     print(f"OK ✅ Features generadas: {ruta_out}")

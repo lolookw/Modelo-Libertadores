@@ -1,0 +1,151 @@
+# Reporte final — Proyecto 2 (Predicción 1X2 Libertadores)
+
+Objetivo: predecir el resultado de un partido (E/L/V) usando solo información **pre-partido**, evitando leakage.
+
+Split temporal: train 1996–2018, val 2019–2021, test 2022–2024.
+
+## Resumen ejecutivo
+
+- Baselines simples (localía / frecuencias) sirven como piso.
+- Elo mejora fuerte al capturar fuerza relativa.
+- El mejor modelo (Logística + Elo + forma rolling + fase + neutral) mejora logloss y accuracy en val/test.
+
+## Baselines
+
+# Reporte de resultados — Baselines (1X2)
+
+Este reporte evalúa baselines en validación y test. Métrica principal: **logloss**.
+
+Clases: `L` (local), `E` (empate), `V` (visitante)
+
+## Baseline 1 — Siempre Local
+
+| Split | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---:|---:|---:|---:|
+| Val | 6.8473 | 0.5044 | 0.3333 | 0.2235 |
+| Test | 6.7211 | 0.5135 | 0.3333 | 0.2262 |
+
+**Matriz de confusión (Val)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 74 | 0 |
+| L | 0 | 173 | 0 |
+| V | 0 | 96 | 0 |
+
+**Matriz de confusión (Test)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 77 | 0 |
+| L | 0 | 152 | 0 |
+| V | 0 | 67 | 0 |
+
+## Baseline 2 — Frecuencias por fase (train → val/test)
+
+| Split | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---:|---:|---:|---:|
+| Val | 1.0417 | 0.5044 | 0.3333 | 0.2235 |
+| Test | 1.0391 | 0.5135 | 0.3333 | 0.2262 |
+
+**Matriz de confusión (Val)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 74 | 0 |
+| L | 0 | 173 | 0 |
+| V | 0 | 96 | 0 |
+
+**Matriz de confusión (Test)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 77 | 0 |
+| L | 0 | 152 | 0 |
+| V | 0 | 67 | 0 |
+
+## Baseline 3 — Elo simple (elos aprendidos en train)
+
+| Split | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---:|---:|---:|---:|
+| Val | 1.0095 | 0.5277 | 0.4265 | 0.4051 |
+| Test | 1.0033 | 0.5372 | 0.4392 | 0.3913 |
+
+**Matriz de confusión (Val)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 5 | 52 | 17 |
+| L | 6 | 134 | 33 |
+| V | 6 | 48 | 42 |
+
+**Matriz de confusión (Test)**
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 2 | 46 | 29 |
+| L | 7 | 126 | 19 |
+| V | 2 | 34 | 31 |
+
+
+## Modelo ML v1 (sin Elo)
+
+# Reporte — Modelo ML (Regresión logística multinomial)
+
+Features: rolling (forma GF/GC + puntos), neutralidad y fase.
+
+| Split | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---:|---:|---:|---:|
+| Val | 1.0063 | 0.5102 | 0.3475 | 0.2636 |
+| Test | 1.0051 | 0.5203 | 0.3461 | 0.2549 |
+
+## Matriz de confusión (Val)
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 1 | 72 | 1 |
+| L | 1 | 169 | 3 |
+| V | 0 | 91 | 5 |
+
+## Matriz de confusión (Test)
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 77 | 0 |
+| L | 0 | 151 | 1 |
+| V | 0 | 64 | 3 |
+
+
+## Modelo ML v2 (con Elo)
+
+# Reporte — Modelo ML (Regresión logística multinomial)
+
+Features: rolling (forma GF/GC + puntos), neutralidad y fase.
+
+| Split | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---:|---:|---:|---:|
+| Val | 0.9645 | 0.5598 | 0.4251 | 0.3850 |
+| Test | 0.9683 | 0.5541 | 0.4153 | 0.3577 |
+
+## Matriz de confusión (Val)
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 1 | 63 | 10 |
+| L | 1 | 157 | 15 |
+| V | 0 | 62 | 34 |
+
+## Matriz de confusión (Test)
+
+| real\pred | E | L | V |
+|---|---:|---:|---:|
+| E | 0 | 61 | 16 |
+| L | 0 | 144 | 8 |
+| V | 0 | 47 | 20 |
+
+
+## Próximos pasos
+
+- Mejorar predicción de empates: features específicas (diferencia de forma, travel proxy por países, etc.) y/o modelo más flexible.
+- Calibración de probabilidades (temperature scaling / isotonic) y evaluación con Brier score.
+- Demo Streamlit para consultar predicciones por matchup.

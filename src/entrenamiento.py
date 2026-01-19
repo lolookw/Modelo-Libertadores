@@ -32,6 +32,10 @@ FEATURES_NUMERICAS = [
     "puntos_ultN_visitante",
     "gf_ultN_visitante",
     "gc_ultN_visitante",
+    "dif_puntos_ultN",
+    "dif_gf_ultN",
+    "dif_gc_ultN",
+
 ]
 
 
