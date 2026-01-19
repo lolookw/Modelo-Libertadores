@@ -24,6 +24,9 @@ from utilidades import asegurar_directorio
 
 FEATURES_NUMERICAS = [
     "neutral",
+    "dif_elo",
+    "elo_local",
+    "elo_visitante",
     "puntos_ultN_local",
     "gf_ultN_local",
     "gc_ultN_local",
@@ -31,6 +34,7 @@ FEATURES_NUMERICAS = [
     "gf_ultN_visitante",
     "gc_ultN_visitante",
 ]
+
 
 FEATURES_CATEGORICAS = ["fase"]
 
