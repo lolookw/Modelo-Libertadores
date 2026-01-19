@@ -164,3 +164,22 @@ Se probó una variante del modelo (Logística + Elo + rolling) agregando feature
 - Mejorar predicción de empates: features específicas (diferencia de forma, travel proxy por países, etc.) y/o modelo más flexible.
 - Calibración de probabilidades (temperature scaling / isotonic) y evaluación con Brier score.
 - Demo Streamlit para consultar predicciones por matchup.
+
+## Calibración de probabilidades — Temperature Scaling
+
+Como el objetivo incluye probabilidades útiles (no solo el argmax), se aplicó **temperature scaling** para calibrar las probabilidades del modelo final.  
+La temperatura **T** se aprendió **solo en validación** (sin tocar test), y luego se evaluó el impacto en test.
+
+- Temperatura estimada: **T = 1.1023** (suaviza probabilidades; el modelo base estaba levemente overconfident).
+- Resultado: mejora consistente en **logloss** sin cambios en métricas de clasificación dura (accuracy/F1), lo cual es esperable.
+
+**Métricas (antes vs después)**
+
+| Split | Variante | Logloss | Accuracy | Balanced Acc | Macro F1 |
+|---|---|---:|---:|---:|---:|
+| Val | Base | 0.9651 | 0.5598 | 0.4251 | 0.3850 |
+| Val | Calibrado | 0.9638 | 0.5598 | 0.4251 | 0.3850 |
+| Test | Base | 0.9700 | 0.5541 | 0.4153 | 0.3577 |
+| Test | Calibrado | 0.9683 | 0.5541 | 0.4153 | 0.3577 |
+
+**Conclusión:** se adopta la versión **calibrada** como salida final para scoring probabilístico.
