@@ -39,7 +39,9 @@ class BaselineEloSimple:
     ventaja_local: float = 60.0
     k: float = 20.0
     escala: float = 400.0
-    prob_empate: float = 0.25
+    prob_empate_base: float = 0.18
+    prob_empate_extra: float = 0.14
+    escala_empate: float = 250.0
     epsilon: float = 1e-6
 
     def predecir_y_actualizar_en_train(
@@ -114,7 +116,10 @@ class BaselineEloSimple:
         # prob de local condicional a "no empate"
         p_local_cond = 1.0 / (1.0 + 10 ** (-dif / self.escala))
 
-        p_e = float(self.prob_empate)
+        # Empate depende de cuán parejos son (dif cerca de 0 => más empate)
+        # p_e = base + extra * exp(-(dif/escala_empate)^2)
+        p_e = self.prob_empate_base + self.prob_empate_extra * float(np.exp(- (dif / self.escala_empate) ** 2))
+        p_e = min(max(p_e, self.epsilon), 0.60)  # límite razonable
         p_no_e = 1.0 - p_e
         p_l = p_no_e * p_local_cond
         p_v = p_no_e * (1.0 - p_local_cond)
