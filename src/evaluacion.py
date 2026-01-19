@@ -157,7 +157,9 @@ def main() -> None:
         ventaja_local=60.0,
         k=20.0,
         escala=400.0,
-        prob_empate=0.25,
+        prob_empate_base=0.20,
+        prob_empate_extra=0.14,
+        escala_empate=250.0,
         epsilon=1e-6,
     )
 

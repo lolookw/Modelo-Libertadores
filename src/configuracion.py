@@ -24,9 +24,12 @@ COLUMNAS_MODELO = [
     "competicion",
     "fase",
     "instancia",
+    "pais_sede",
     "equipo_local",
     "equipo_visitante",
     "pais_local",
     "pais_visitante",
+    "goles_local",
+    "goles_visitante",
     "resultado_norm",
 ]
