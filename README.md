@@ -1,6 +1,6 @@
 # Proyecto 2 — Predicción 1X2 en Copa Libertadores (1996–2024)
 
-Este repo es el **Proyecto 2** de mi portfolio (8 semanas, 4–6 proyectos). El objetivo fue construir un pipeline **publicable y reproducible** de **modelado + evaluación + storytelling**, usando como base el dataset armado en el **Proyecto 1** (Libertadores 1996–2024).
+Este repo es el segundo proyecto de mi portfolio. El objetivo fue construir un pipeline **publicable y reproducible** de **modelado + evaluación + storytelling**, usando como base el dataset armado en el proyecto **Libertadores 1996–2024**.
 
 La idea del proyecto es mostrar un proceso realista de trabajo:
 - definir un problema de predicción
